@@ -4,6 +4,7 @@ import user_validator from "../lib/validator-schema/user-validation-schema.js";
 import expressValidator from "../middleware/express-validator.js";
 import verifyTokenMiddleware from "../middleware/verify-token-middleware.js";
 import verifyOtpMiddleware from "../middleware/verify-otp-middleware.js";
+import verifyEmailOtpMiddleware from "../middleware/verify-email-otp-middleware.js";
 const router = express();
 
 router.post(
@@ -26,6 +27,7 @@ router.post(
 router.post(
   "/users/verify-otp",
   verifyTokenMiddleware,
+  verifyEmailOtpMiddleware,
   user_controller.userVerifyOtp,
 );
 

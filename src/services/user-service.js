@@ -1,7 +1,7 @@
 import logger from "../config/logger.js";
 import userRepository from "../repository/user-repository.js";
 import AppError from "../utils/error-class.js";
-import { comparePassword, generateHashValue } from "../utils/hashing.js";
+import { compareHashedValue, generateHashValue } from "../utils/hashing.js";
 import sendEmail from "../utils/send-email.js";
 import crypto from "node:crypto";
 
@@ -34,7 +34,7 @@ class UserService {
       if (!user_info)
         throw new AppError("Please provide a valid email address", 400);
 
-      if (!comparePassword(password, user_info.password)) {
+      if (!compareHashedValue(password, user_info.password)) {
         throw new AppError("Please provide a valid password", 400);
       }
 
@@ -85,6 +85,39 @@ class UserService {
     } catch (error) {
       logger.error("catch user-service.js sendOtp", error);
       throw new AppError(error.message ?? "failed to send otp", 500);
+    }
+  }
+
+  async verifyEmailOtp(id, email_otp) {
+    try {
+      let otp_status = "";
+      logger.info(
+        `user-service verifyEmailOtp id : ${id} , email_otp ${email_otp}`,
+      );
+
+      const user = await this.userRepository.findById(id);
+      const is_verified_otp = compareHashedValue(
+        String(email_otp),
+        user.email_otp ?? "",
+      );
+
+      if (!is_verified_otp) {
+        logger.warn("Entered otp is not valid");
+        throw new AppError("otp is not valid , enter otp again", 404);
+      } else if (
+        is_verified_otp &&
+        Date.now() >= new Date(user.email_otp_expires_at).getTime()
+      ) {
+        logger.warn("Entered otp is expired");
+        otp_status = "expired";
+      }
+      if (otp_status === "expired") return otp_status;
+
+      await this.userRepository.findByIdAndRemoveOtp(id);
+      return otp_status;
+    } catch (error) {
+      logger.error("user-service failed", error);
+      throw new AppError(error.message ?? "server failed to verify otp", 500);
     }
   }
 }

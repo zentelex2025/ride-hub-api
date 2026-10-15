@@ -9,6 +9,9 @@ class UserRepository {
   async findByOne(email) {
     return await UserModel.findOne({ email });
   }
+  async findById(id) {
+    return await UserModel.findById({ _id: id });
+  }
   async refreshToken(user_info) {
     return await user_info.save();
   }
@@ -32,6 +35,16 @@ class UserRepository {
 
       { returnDocument: "after" },
     );
+  }
+
+  async findByIdAndRemoveOtp(id) {
+    return await UserModel.findByIdAndUpdate(id, {
+      $set: {
+        email_otp: null,
+        email_otp_created_at: null,
+        email_otp_expires_at: null,
+      },
+    });
   }
 }
 

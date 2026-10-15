@@ -121,6 +121,54 @@ const user_controller = {
     }
   },
 
+  userVerifyOtp: async (req, res, next) => {
+    try {
+      const { email_otp } = req.body;
+      const { id } = req.user;
+      const otp_status = await userService.verifyEmailOtp(id, email_otp);
+
+      // we change the cookie expiration (is-otp-expire) status , for re-sending the otp
+      if (otp_status === "expired") {
+        return res
+          .cookie("is-otp-expire", true, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 7 days
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+          })
+          .status(200)
+          .json({
+            success: false,
+            message: "Otp is expired",
+            data: null,
+          });
+      }
+
+      res
+        .clearCookie("is-new-otp")
+        .clearCookie("is-otp-expire")
+        .clearCookie("verify-email")
+        .cookie("otp-verified", true, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 7 days
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+        })
+        .send(200)
+        .json({
+          success: true,
+          message: "Otp verified successfully",
+          data: null,
+        });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   deleteUser: async (req, res, next) => {
     try {
     } catch (error) {}
