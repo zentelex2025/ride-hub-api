@@ -46,6 +46,12 @@ class UserRepository {
       },
     });
   }
+
+  async forgettingPassword(id, hashed_password) {
+    await UserModel.findByIdAndUpdate(id, {
+      $set: { password: hashed_password },
+    });
+  }
 }
 
 export default new UserRepository();

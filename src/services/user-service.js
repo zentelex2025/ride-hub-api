@@ -1,3 +1,4 @@
+import { hasSubscribers } from "node:diagnostics_channel";
 import logger from "../config/logger.js";
 import userRepository from "../repository/user-repository.js";
 import AppError from "../utils/error-class.js";
@@ -118,6 +119,26 @@ class UserService {
     } catch (error) {
       logger.error("user-service failed", error);
       throw new AppError(error.message ?? "server failed to verify otp", 500);
+    }
+  }
+
+  async forgettingPassword(id, new_password) {
+    try {
+      logger.info(
+        `user-service forgettingPassword  id: ${id} new_password : ${new_password}`,
+      );
+
+      const hashed_password = generateHashValue(new_password);
+      return await this.userRepository.forgettingPassword(id, hashed_password);
+    } catch (error) {
+      logger.error(
+        "user-service forgettingPassword failed-to forgot password",
+        error,
+      );
+      throw new AppError(
+        error.message ?? "server failed to forgot password",
+        500,
+      );
     }
   }
 }

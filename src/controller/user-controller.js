@@ -146,6 +146,7 @@ const user_controller = {
           });
       }
 
+      logger.info("user-controller userVerifyOtp Otp is successfully verified");
       res
         .clearCookie("is-new-otp")
         .clearCookie("is-otp-expire")
@@ -158,12 +159,32 @@ const user_controller = {
           // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 7 days
           maxAge: 1000 * 60 * 60 * 24 * 7,
         })
-        .send(200)
+        .status(200)
         .json({
           success: true,
           message: "Otp verified successfully",
           data: null,
         });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  forgotPassword: async (req, res, next) => {
+    try {
+      const { id } = req.user;
+      const { password } = req.body;
+
+      logger.info(`id: ${id} , password ${password}`);
+
+      await userService.forgettingPassword(id, password);
+
+      logger.info("user successfully forgot password");
+      res.clearCookie("otp-verified").status(200).json({
+        success: true,
+        message: "password updated successfully",
+        data: null,
+      });
     } catch (error) {
       next(error);
     }
