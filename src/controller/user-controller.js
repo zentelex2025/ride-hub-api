@@ -1,5 +1,6 @@
 import logger from "../config/logger.js";
 import userService from "../services/user-service.js";
+import generateToken from "../lib/token.js";
 
 const user_controller = {
   createUser: async (req, res, next) => {
@@ -20,20 +21,106 @@ const user_controller = {
   loginUser: async (req, res, next) => {
     try {
       const user_data = req.body;
-      await userService.login(user_data);
+      const user_info = await userService.login(user_data);
+
+      const access_token = generateToken.accessToken(user_info);
+      const refresh_token = generateToken.refreshToken(user_info);
+
+      await userService.saveRefreshToken(user_info, refresh_token);
 
       logger.info("user is logged in");
       res
+        .cookie("refresh-token", refresh_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 7 days
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+        })
+        .cookie("access-token", access_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 7 days
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+        })
         .status(200)
         .json({ success: true, message: "User logged-in successfully" });
     } catch (error) {
       next(error);
     }
   },
-  updateUser: async (req, res, next) => {
+  userEmailVerification: async (req, res, next) => {
     try {
-    } catch (error) {}
+      const { email } = req.body;
+
+      const is_user_verified = await userService.verifyEmail(email);
+      logger.info("user is verified");
+
+      res
+        .cookie("verify-email", is_user_verified, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 1 days
+          maxAge: 1000 * 60 * 60 * 24 * 1,
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "your email is verified",
+        });
+    } catch (error) {
+      next(error);
+    }
   },
+
+  userSendOtp: async (req, res, next) => {
+    try {
+      const { id, email, is_otp_expire } = req.user;
+
+      console.log("user-controller userSendOtp", req.user);
+
+      if (is_otp_expire === "false") {
+        logger.warn("the otp is not expired yet.");
+        return res.status(200).json({
+          success: true,
+          message: "An OTP has already been sent. Please check your email.",
+        });
+      }
+      await userService.sendOtp(id, email);
+
+      res
+        .cookie("is-otp-expire", false, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 1 days
+          maxAge: 1000 * 60 * 60 * 24 * 1,
+        })
+        .cookie("is-new-otp", true, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+          // 1000 millisecond , then 60 second , then 60 minute , then 24 hours , then 1 days
+          maxAge: 1000 * 60 * 60 * 24 * 1,
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "OTP sent your email address",
+          data: null,
+        });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   deleteUser: async (req, res, next) => {
     try {
     } catch (error) {}

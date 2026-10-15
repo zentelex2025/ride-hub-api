@@ -96,6 +96,25 @@ const user_model = new mongoose.Schema(
       default: null,
     },
 
+    refresh_token: {
+      type: String,
+      default: null,
+    },
+
+    email_otp: {
+      type: String,
+      default: null,
+    },
+
+    email_otp_created_at: {
+      type: Date,
+      default: null,
+    },
+    email_otp_expires_at: {
+      type: Date,
+      default: null,
+    },
+
     is_active: {
       type: Boolean,
       default: true,
