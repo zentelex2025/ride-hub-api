@@ -6,6 +6,9 @@ import verifyTokenMiddleware from "../middleware/verify-token-middleware.js";
 import verifyOtpMiddleware from "../middleware/verify-otp-middleware.js";
 import verifyEmailOtpMiddleware from "../middleware/verify-email-otp-middleware.js";
 import verifyUserIsOtpVerified from "../middleware/user-otp-verified.js";
+import admin_controller from "../controller/admin-controller.js";
+import authorizationMiddleware from "../middleware/authorization-middleware.js";
+import super_admin_controller from "../controller/super-admin-controller.js";
 const router = express();
 
 router.post(
@@ -38,5 +41,17 @@ router.patch(
   verifyUserIsOtpVerified,
   user_controller.forgotPassword,
 );
+
+// Admin routes
+
+router.post(
+  "/admin",
+  verifyTokenMiddleware,
+  authorizationMiddleware(["all", "user"])("create"),
+  admin_controller.createAdmin,
+);
+
+router.post("/super-admin", super_admin_controller.createSuperAdmin);
+router.post("/admin-login", verifyTokenMiddleware, admin_controller.loginAdmin);
 
 export default router;

@@ -96,6 +96,12 @@ const user_model = new mongoose.Schema(
       default: null,
     },
 
+    role: {
+      type: String,
+      enum: ["admin", "user", "super-admin"],
+      default: "user",
+    },
+
     refresh_token: {
       type: String,
       default: null,

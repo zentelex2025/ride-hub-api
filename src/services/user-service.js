@@ -1,4 +1,3 @@
-import { hasSubscribers } from "node:diagnostics_channel";
 import logger from "../config/logger.js";
 import userRepository from "../repository/user-repository.js";
 import AppError from "../utils/error-class.js";
