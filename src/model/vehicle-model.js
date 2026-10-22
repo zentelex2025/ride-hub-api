@@ -89,12 +89,6 @@ const vehicleSchema = new mongoose.Schema(
       min: 0,
     },
 
-    created_by: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Admin",
-      required: true,
-    },
-
     vehicle_image: {
       type: [String],
       required: true,

@@ -47,11 +47,11 @@ router.patch(
 router.post(
   "/admin",
   verifyTokenMiddleware,
-  authorizationMiddleware(["all", "user"])("create"),
+  authorizationMiddleware(["all", "super-admin", "user"])(["create"]), // currently we has'nt settle the super-admin login as of yet
   admin_controller.createAdmin,
 );
 
 router.post("/super-admin", super_admin_controller.createSuperAdmin);
-router.post("/admin-login", verifyTokenMiddleware, admin_controller.loginAdmin);
+router.post("/admin-login", admin_controller.loginAdmin);
 
 export default router;

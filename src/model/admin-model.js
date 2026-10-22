@@ -29,13 +29,12 @@ const adminSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false,
     },
 
     role: {
       type: String,
-      enum: ["ADMIN", "SUPER_ADMIN"],
-      default: "ADMIN",
+      enum: ["admin", "super-admin"],
+      default: "admin",
       required: true,
     },
 
@@ -58,7 +57,6 @@ const adminSchema = new mongoose.Schema(
     refresh_token: {
       type: String,
       default: null,
-      select: false,
     },
   },
   {
