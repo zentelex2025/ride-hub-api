@@ -16,11 +16,29 @@ class VehicleService {
 
       return await this.vehicleRepository.createNewVehicle(vehicle_info);
     } catch (error) {
-      logger.error("vehicle-service create-vehicle", error);
+      logger.error("catch vehicle-service create-vehicle", error);
       throw new AppError(
         error.message ?? "server failed to add new vehicle to the list",
         500,
       );
+    }
+  }
+
+  async get(id) {
+    try {
+      return await this.vehicleRepository.getVehicle(id);
+    } catch (error) {
+      logger.error("catch vehicle-service getVehicle", error);
+      throw new AppError(error.message ?? "failed to fetch vehicle", 500);
+    }
+  }
+
+  async updateVehicle(vehicle_id, vehicle_new_data) {
+    try {
+      return this.vehicleRepository.update(vehicle_id, vehicle_new_data);
+    } catch (error) {
+      logger.error("catch vehicle-service updateVehicle", error);
+      throw new AppError(error.message ?? "failed to update vehicle", 500);
     }
   }
 }

@@ -12,7 +12,7 @@ export default function createRouter() {
 
   router.use("/auth", auth_routes);
   router.use(
-    "/vehicles",
+    "/vehicles/",
     verifyTokenMiddleware,
     authorizationMiddleware(["all", "super-admin", "admin"])([
       "create , update , delete , fetch",
