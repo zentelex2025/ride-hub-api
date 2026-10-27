@@ -17,6 +17,25 @@ class VehicleRepository {
       { new: true, runValidators: true },
     );
   }
+
+  async markVehicleAsBooked(vehicle_id, updated_data, session) {
+    return await VehicleModel.findByIdAndUpdate(
+      vehicle_id,
+      {
+        $set: { ...updated_data },
+        $inc: { rents: 1 },
+      },
+      {
+        new: true,
+        runValidators: true,
+        session,
+      },
+    );
+  }
+
+  async findById(id, session) {
+    return await VehicleModel.findById({ _id: id }).session(session);
+  }
 }
 
 export default new VehicleRepository();

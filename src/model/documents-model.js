@@ -10,7 +10,7 @@ const documentsSchema = new mongoose.Schema(
     },
 
     aadhaar_card_image: {
-      type: String,
+      type: [String],
     },
 
     pan_card_image: {
@@ -23,8 +23,8 @@ const documentsSchema = new mongoose.Schema(
 
     license_type: {
       type: String,
-      enum: ["TWO-WHEELER", "FOUR-WHEELER", "BOTH"],
-      default: "BOTH",
+      enum: ["two-wheeler", "four-wheeler", "both"],
+      default: "two-wheeler",
     },
 
     aadhaar_rejection_reason: {
@@ -47,20 +47,20 @@ const documentsSchema = new mongoose.Schema(
 
     aadhaar_status: {
       type: String,
-      enum: ["PENDING", "APPROVED", "REJECTED"],
-      default: "PENDING",
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
     },
 
     pan_status: {
       type: String,
-      enum: ["PENDING", "APPROVED", "REJECTED"],
-      default: "PENDING",
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
     },
 
     license_status: {
       type: String,
-      enum: ["PENDING", "APPROVED", "REJECTED"],
-      default: "PENDING",
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
     },
 
     isDeleted: {

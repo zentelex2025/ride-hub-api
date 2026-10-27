@@ -118,10 +118,16 @@ const vehicleSchema = new mongoose.Schema(
       min: 0,
     },
 
+    vehicle_type: {
+      type: String,
+      enum: ["two-wheeler", "four-wheeler"],
+      required: true,
+    },
+
     vehicle_status: {
       type: String,
-      enum: ["AVAILABLE", "BOOKED", "RENTED", "IN_REPAIR", "UNAVAILABLE"],
-      default: "AVAILABLE",
+      enum: ["available", "booked", "rented", "repair", "unavailable"],
+      default: "available",
     },
 
     is_deleted: {

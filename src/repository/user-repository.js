@@ -9,8 +9,8 @@ class UserRepository {
   async findByOne(email) {
     return await UserModel.findOne({ email });
   }
-  async findById(id) {
-    return await UserModel.findById({ _id: id });
+  async findById(id, session) {
+    return await UserModel.findById({ _id: id }).session(session);
   }
   async refreshToken(user_info) {
     return await user_info.save();
