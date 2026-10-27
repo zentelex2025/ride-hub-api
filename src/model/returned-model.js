@@ -7,17 +7,12 @@ const returnedSchema = new mongoose.Schema(
       ref: "Admin",
       required: true,
     },
+
     booking_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Booking",
       required: true,
       unique: true,
-    },
-
-    paid_amount: {
-      type: Number,
-      default: 0,
-      min: 0,
     },
 
     penalty_amount: {
