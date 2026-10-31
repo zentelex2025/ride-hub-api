@@ -5,7 +5,6 @@ const bookingSchema = new mongoose.Schema(
     created_by: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
-      required: true,
     },
 
     vehicle_id: {
@@ -68,8 +67,8 @@ const bookingSchema = new mongoose.Schema(
 
     booking_status: {
       type: String,
-      enum: ["PENDING", "ACTIVE", "COMPLETED", "CANCELLED"],
-      default: "PENDING",
+      enum: ["pending", "active", "completed", "cancelled"],
+      default: "pending",
     },
 
     is_deleted: {

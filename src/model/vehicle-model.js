@@ -89,6 +89,14 @@ const vehicleSchema = new mongoose.Schema(
       min: 0,
     },
 
+    vehicle_number: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      maxlength: 20,
+    },
+
     vehicle_image: {
       type: [String],
       required: true,
@@ -99,12 +107,6 @@ const vehicleSchema = new mongoose.Schema(
       default: 0,
       min: 0,
       max: 5,
-    },
-
-    price: {
-      type: Number,
-      default: 0,
-      min: 0,
     },
 
     premium: {
@@ -134,7 +136,11 @@ const vehicleSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    cc: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
     rents: {
       type: Number,
       default: 0,

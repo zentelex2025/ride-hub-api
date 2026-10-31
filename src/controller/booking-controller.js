@@ -2,12 +2,11 @@ import logger from "../config/logger.js";
 import bookingService from "../services/booking-service.js";
 
 const booking_controller = {
-  create: async (req, res, next) => {
+  requestBooking: async (req, res, next) => {
     try {
-      const { id } = req.user;
       const booking_info = req.body;
 
-      await bookingService.createBooking(id, booking_info);
+      await bookingService.createRequestBooking(booking_info);
 
       logger.info("New booking created successfully");
 

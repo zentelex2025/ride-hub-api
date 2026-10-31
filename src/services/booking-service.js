@@ -21,14 +21,12 @@ class BookingService {
     this.rentalPlanRepository = rentalPlanRepository;
     this.documentsRepository = documentsRepository;
   }
-  async createBooking(id, booking_info) {
+  async createRequestBooking(booking_info) {
     const session = await mongoose.startSession();
     let created_booking;
 
     try {
       await session.withTransaction(async () => {
-        booking_info.created_by = id;
-
         const is_user_exist = await this.userRepository.findById(
           booking_info.user_id,
           session,
