@@ -31,7 +31,7 @@ const user_controller = {
       logger.info("user is logged in");
       res
         .cookie("refresh-token", refresh_token, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -39,7 +39,7 @@ const user_controller = {
           maxAge: 1000 * 60 * 60 * 24 * 7,
         })
         .cookie("access-token", access_token, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -61,7 +61,7 @@ const user_controller = {
 
       res
         .cookie("verify-email", is_user_verified, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -95,7 +95,7 @@ const user_controller = {
 
       res
         .cookie("is-otp-expire", false, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -103,7 +103,7 @@ const user_controller = {
           maxAge: 1000 * 60 * 60 * 24 * 1,
         })
         .cookie("is-new-otp", true, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -131,7 +131,7 @@ const user_controller = {
       if (otp_status === "expired") {
         return res
           .cookie("is-otp-expire", true, {
-            httpOnly: true,
+            httpOnly: process.env.NODE_ENV === "production" ? true : false,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
             path: "/",
@@ -152,7 +152,7 @@ const user_controller = {
         .clearCookie("is-otp-expire")
         .clearCookie("verify-email")
         .cookie("otp-verified", true, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",

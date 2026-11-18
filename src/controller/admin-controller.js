@@ -32,7 +32,7 @@ const admin_controller = {
 
       res
         .cookie("refresh-token", refresh_token, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
@@ -40,7 +40,7 @@ const admin_controller = {
           maxAge: 1000 * 60 * 60 * 24 * 7,
         })
         .cookie("access-token", access_token, {
-          httpOnly: true,
+          httpOnly: process.env.NODE_ENV === "production" ? true : false,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           path: "/",
