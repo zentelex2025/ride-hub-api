@@ -8,8 +8,7 @@ class RentalPlanServices {
   }
   async createNewPlan(id, plan_info) {
     try {
-      plan_info.created_by = id;
-
+      plan_info.created_by = id; // one thing we need to check is vehicle is there in db or not / is the id is correct or not
       return await this.rentalPlanRepository.createPlan(plan_info);
     } catch (error) {
       logger.error("catch rental-plan-service createNewPlan", error);

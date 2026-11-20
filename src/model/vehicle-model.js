@@ -149,6 +149,10 @@ const vehicleSchema = new mongoose.Schema(
     vehicle_sr_no: {
       type: String,
     },
+    is_rental_plan: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

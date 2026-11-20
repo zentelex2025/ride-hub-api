@@ -8,13 +8,11 @@ const rentalPlanSchema = new mongoose.Schema(
       required: true,
     },
 
-    vehicle_id: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Vehicle",
-        required: true,
-      },
-    ],
+    vehicle_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicle",
+      required: true,
+    },
     hourly_rent_price: {
       type: Number,
       required: true,
