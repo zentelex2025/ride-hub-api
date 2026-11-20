@@ -33,6 +33,20 @@ const rental_plan_controller = {
       next(error);
     }
   },
+  getRentalPlansWithVehicles: async (req, res, next) => {
+    try {
+      const all_rental_plans_with_vehicles =
+        await rentalPlanService.getRentalPlansWithVehicles();
+
+      res.status(200).send({
+        success: true,
+        message: "rental plans with vehicles fetched successfully",
+        data: all_rental_plans_with_vehicles,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
   deletePlan: async () => {},
   changePlan: async () => {},
 };

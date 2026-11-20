@@ -146,6 +146,9 @@ const vehicleSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    vehicle_sr_no: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -5,7 +5,13 @@ class RentalPlanRepository {
     return await RentalPlanModel.create({ ...plan_info });
   }
   async getAllPlans() {
-    return await RentalPlanModel.find();
+    return await RentalPlanModel.find({ is_deleted: false });
+  }
+  async getRentalPlansWithVehicles() {
+    return await RentalPlanModel.find({ is_deleted: false }).populate({
+      path: "vehicle_id",
+      match: { is_deleted: false },
+    });
   }
   async findById(id, session) {
     return await RentalPlanModel.findById({ _id: id }).session(session);

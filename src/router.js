@@ -21,19 +21,12 @@ export default function createRouter() {
   router.use(
     "/vehicles/",
     verifyTokenMiddleware,
-    authorizationMiddleware(["all", "super-admin", "admin"])([
+    authorizationMiddleware(["all", "super-admin", "admin", "user"])([
       "create , update , delete , fetch",
     ]),
     vehicles_routes,
   );
-  router.use(
-    "/rental-plan",
-    verifyTokenMiddleware,
-    authorizationMiddleware(["super-admin", "admin"])([
-      "create , update , delete , fetch",
-    ]),
-    rental_plan_routes,
-  );
+  router.use("/rental-plan", rental_plan_routes);
   router.use(
     "/booking",
     verifyTokenMiddleware,

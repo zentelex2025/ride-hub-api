@@ -13,6 +13,10 @@ class VehicleService {
       const image_url = await base64ToUrl(vehicle_info.vehicle_image);
       vehicle_info.vehicle_image = image_url;
       vehicle_info.created_by = id;
+      vehicle_info.vehicle_sr_no = new Date()
+        .toISOString()
+        .slice(0, 10)
+        .replaceAll("-", ""); // generating the unique serial number every time
 
       return await this.vehicleRepository.createNewVehicle(vehicle_info);
     } catch (error) {
@@ -24,6 +28,14 @@ class VehicleService {
     }
   }
 
+  async getAllVehicles() {
+    try {
+      return await this.vehicleRepository.getAllVehiclesUser();
+    } catch (error) {
+      logger.error("catch vehicle-service getVehicle", error);
+      throw new AppError(error.message ?? "failed to fetch vehicle", 500);
+    }
+  }
   async get(id) {
     try {
       return await this.vehicleRepository.getVehicle(id);

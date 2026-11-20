@@ -23,6 +23,18 @@ const vehicle_controller = {
 
   getVehicle: async (req, res, next) => {
     try {
+      const vehicle_data = await vehicleService.getAllVehicles();
+      res.status(200).json({
+        success: true,
+        message: "data fetched successfully",
+        data: vehicle_data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getVehicleById: async (req, res, next) => {
+    try {
       const { id } = req.user;
       const vehicle_data = await vehicleService.get(id);
       res.status(200).json({

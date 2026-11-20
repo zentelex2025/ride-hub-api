@@ -36,6 +36,9 @@ class VehicleRepository {
   async findById(id, session) {
     return await VehicleModel.findById({ _id: id }).session(session);
   }
+  async getAllVehiclesUser() {
+    return await VehicleModel.find({ is_deleted: false });
+  }
 }
 
 export default new VehicleRepository();

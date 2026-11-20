@@ -31,6 +31,21 @@ class RentalPlanServices {
       );
     }
   }
+
+  async getRentalPlansWithVehicles() {
+    try {
+      return await this.rentalPlanRepository.getRentalPlansWithVehicles();
+    } catch (error) {
+      logger.error(
+        "catch rental-plan-service getRentalPlansWithVehicles",
+        error,
+      );
+      throw new AppError(
+        error.message ?? "server failed to fetch rental plans with vehicles",
+        500,
+      );
+    }
+  }
 }
 
 export default new RentalPlanServices(rentalPlanRepository);
