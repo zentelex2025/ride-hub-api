@@ -23,6 +23,7 @@ router.get(
   //   ]),
   rental_plan_controller.getPlan,
 );
+
 router.get(
   "/rental-plans-with-vehicles",
   rental_plan_controller.getRentalPlansWithVehicles,
