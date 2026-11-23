@@ -25,6 +25,12 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
 
+    plan_type: {
+      type: String,
+      enum: ["monthly_rent", "weekly_rent", "hourly_rent", "daily_rent"],
+      required: true,
+    },
+
     start_date: {
       type: Date,
       required: true,

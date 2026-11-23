@@ -4,7 +4,9 @@ import bookingService from "../services/booking-service.js";
 const booking_controller = {
   requestBooking: async (req, res, next) => {
     try {
+      const { id } = req.user;
       const booking_info = req.body;
+      booking_info.user_id = id;
 
       await bookingService.createRequestBooking(booking_info);
 
